@@ -1,3 +1,4 @@
 Django>=2.1,<2.2
 psycopg2>=2.7,<3.0
 wagtail>=2.4,<2.5
+django-cors-headers

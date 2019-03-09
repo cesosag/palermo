@@ -29,6 +29,23 @@ services:
       - DB_USER=${DB_USER}
       - DB_PWD=${DB_PWD}
       - DB_NAME=${DB_NAME}
+  next:
+    build:
+      context: ./next
+      dockerfile: dev.Dockerfile
+      args:
+        - PORT=4000
+    command: yarn run dev
+    volumes:
+      - ./next:/app:rw
+      - next_nm:/app/node_modules
+    ports:
+      - 4000:4000
+    depends_on:
+      - wagtail
+    environment:
+      - NODE_ENV=dev
+      - PORT=4000
   web:
     image: nginx
     volumes:
@@ -40,9 +57,9 @@ services:
       - 1080:80
       - 1443:443
     depends_on:
-      - db
       - wagtail
 volumes:
   postgres_data:
   nginx_run:
   nginx_cache:
+  next_nm:

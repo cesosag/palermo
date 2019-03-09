@@ -1,0 +1,23 @@
+{
+  "name": "palermo-next",
+  "version": "1.0.0",
+  "description": "Palermo web front app",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next -p $PORT",
+    "build": "next build",
+    "start": "next start -p $PORT"
+  },
+  "author": "cesosag",
+  "license": "MIT",
+  "devDependencies": {
+    "@zeit/next-sass": "^1.0.1",
+    "node-sass": "^4.11.0"
+  },
+  "dependencies": {
+    "isomorphic-unfetch": "^3.0.0",
+    "next": "^8.0.3",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4"
+  }
+}
