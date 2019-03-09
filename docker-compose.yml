@@ -9,12 +9,9 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PWD}
       - POSTGRES_DB=${DB_NAME}
-    ports:
-      - 5432:5432
-  web:
+  wagtail:
     build:
-      context: .
-      dockerfile: ./Dockerfile
+      context: ./wagtail
       args:
         - DJ_SECRET_KEY=${DJ_SECRET_KEY}
         - DB_USER=${DB_USER}
@@ -22,7 +19,7 @@ services:
         - DB_NAME=${DB_NAME}
     command: bash -c "python manage.py migrate && exec gunicorn palermo.wsgi:application --bind 0.0.0.0:8000 --workers 3"
     volumes:
-      - .:/code
+      - ./wagtail:/code
     ports:
       - 8000:8000
     depends_on:
@@ -32,5 +29,20 @@ services:
       - DB_USER=${DB_USER}
       - DB_PWD=${DB_PWD}
       - DB_NAME=${DB_NAME}
+  web:
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./.logs/nginx:/var/log/nginx
+      - nginx_run:/var/run
+      - nginx_cache:/var/cache/nginx
+    ports:
+      - 1080:80
+      - 1443:443
+    depends_on:
+      - db
+      - wagtail
 volumes:
   postgres_data:
+  nginx_run:
+  nginx_cache:
