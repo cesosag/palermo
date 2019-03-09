@@ -1,0 +1,36 @@
+version: '3.2'
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PWD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - 5432:5432
+  web:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - DJ_SECRET_KEY=${DJ_SECRET_KEY}
+        - DB_USER=${DB_USER}
+        - DB_PWD=${DB_PWD}
+        - DB_NAME=${DB_NAME}
+    command: bash -c "python manage.py migrate && exec gunicorn palermo.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+    volumes:
+      - .:/code
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    environment:
+      - DJ_SECRET_KEY=${DJ_SECRET_KEY}
+      - DB_USER=${DB_USER}
+      - DB_PWD=${DB_PWD}
+      - DB_NAME=${DB_NAME}
+volumes:
+  postgres_data:

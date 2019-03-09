@@ -1,10 +1,19 @@
 # Use an official Python runtime as a parent image
 FROM python:3.7
-LABEL maintainer="hello@wagtail.io"
+LABEL maintainer="cesosag@gmail.com"
+
+ARG DJ_SECRET_KEY
+ARG DB_USER
+ARG DB_PWD
+ARG DB_NAME
 
 # Set environment varibles
 ENV PYTHONUNBUFFERED 1
 ENV DJANGO_ENV dev
+ENV DJ_SECRET_KEY "${DJ_SECRET_KEY}"
+ENV DB_USER "${DB_USER}"
+ENV DB_PWD "${DB_PWD}"
+ENV DB_NAME "${DB_NAME}"
 
 COPY ./requirements.txt /code/requirements.txt
 RUN pip install --upgrade pip
@@ -17,11 +26,11 @@ COPY . /code/
 # Set the working directory to /code/
 WORKDIR /code/
 
-RUN python manage.py migrate
+#RUN python manage.py migrate
 
 RUN useradd wagtail
 RUN chown -R wagtail /code
 USER wagtail
 
 EXPOSE 8000
-CMD exec gunicorn palermo.wsgi:application --bind 0.0.0.0:8000 --workers 3
+#CMD python manage.py migrate && exec gunicorn palermo.wsgi:application --bind 0.0.0.0:8000 --workers 3
