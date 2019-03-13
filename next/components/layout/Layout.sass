@@ -1,0 +1,27 @@
+@import '../../config/sass/config'
+  
+*,
+*::after,
+*::before
+  box-sizing: border-box
+  
+#__next
+  display: grid
+  grid-template-areas: "header" "content" "footer"
+  justify-content: center
+
+footer,
+header,
+main
+  display: grid
+  justify-content: center
+  width: 100vw
+
+header
+  grid-area: header
+
+main
+  grid-area: content
+
+footer
+  grid-area: footer
