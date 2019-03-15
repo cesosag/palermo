@@ -6,10 +6,10 @@ import { Fragment } from 'react'
 
 import './Layout.sass'
 
-const Layout = (props) => (
+const Layout = ({title, children}) => (
   <Fragment>
     <Head>
-      <title>Palermo</title>
+      <title>{title}</title>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="stylesheet" href="https://unpkg.com/normalize.css@8.0.1/normalize.css" />
     </Head>
@@ -17,7 +17,7 @@ const Layout = (props) => (
       This is the header
     </Header>
     <Content>
-      {props.children}
+      {children}
     </Content>
     <Footer>
       This is the Footer
